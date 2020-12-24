@@ -148,6 +148,9 @@ module Redmine::OmniAuthSAML
 
         settings[:name_identifier_value] ||= name_identifier_value
 
+        # We sign out SP here since we our IDP won't callback after logout
+        saml_logout_user
+
         relay_state = home_url # url_for controller: 'saml', action: 'index'
         redirect_to(logout_request.create(OneLogin::RubySaml::Settings.new(settings), :RelayState => relay_state))
       end
